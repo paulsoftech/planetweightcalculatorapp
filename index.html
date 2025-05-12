@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculate Weight on a Planet</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 20, 0.9)), url('images/galaxy.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 30px 0 10px;
+      font-size: 2rem;
+      color: #f0f0ff;
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    .input-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin: 20px;
+      flex-wrap: wrap;
+    }
+
+    input, select, button {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+    }
+
+    input, select {
+      width: 200px;
+    }
+
+    button {
+      background-color: #555;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #888;
+    }
+
+    .result-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .result-content {
+        height: 400px;
+      background-color: rgba(24, 1, 1, 0.6);
+      padding: 30px;
+      border-radius: 15px;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .planet-image img {
+      width: 300px;
+      height: auto;
+      padding-bottom: 40px;
+    }
+
+    .planet-result {
+      font-size: 1.4rem;
+      text-align: center;
+      max-width: 300px;
+    }
+
+    .message {
+      color: #ffcccc;
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #ccc;
+      font-size: 0.9rem;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculate a weight of an object on a planet</h1>
+
+  <div class="input-section">
+    <input type="number" id="mass" placeholder="Mass in kilogram">
+    <select id="planet">
+      <option value="">--select planet--</option>
+      <option value="Mercury">Mercury</option>
+      <option value="Venus">Venus</option>
+      <option value="Earth">Earth</option>
+      <option value="Mars">Mars</option>
+      <option value="Jupiter">Jupiter</option>
+      <option value="Saturn">Saturn</option>
+      <option value="Uranus">Uranus</option>
+      <option value="Neptune">Neptune</option>
+      <option value="Pluto">Pluto</option>
+    </select>
+    <button id="calculate">Calculate weight</button>
+  </div>
+
+  <div class="message" id="result-message"></div>
+
+  <div class="result-box">
+    <div class="result-content">
+      <div class="planet-image" id="planet-image"></div>
+      <div class="planet-result" id="planet-result"></div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Planet Weight Calculator by Paul Adekanye | Powered by Paulsoftech 🚀
+  </footer>
+
+  <script>
+    const planetData = {
+      Mercury:  { gravity: 3.7,  image: 'mercury.png' },
+      Venus:    { gravity: 8.87, image: 'venus.png' },
+      Earth:    { gravity: 9.81, image: 'earth.png' },
+      Mars:     { gravity: 3.71, image: 'mars.png' },
+      Jupiter:  { gravity: 24.8, image: 'jupital.png' },
+      Saturn:   { gravity: 10.4, image: 'saturn.png' },
+      Uranus:   { gravity: 8.69, image: 'uranus.png' },
+      Neptune:  { gravity: 11.2, image: 'neptune.png' },
+      Pluto:    { gravity: 0.62, image: 'pluto.png' }
+    };
+
+    document.getElementById('calculate').addEventListener('click', () => {
+      const massInput = document.getElementById('mass').value;
+      const planet = document.getElementById('planet').value;
+
+      const resultMsg = document.getElementById('result-message');
+      const planetImgBox = document.getElementById('planet-image');
+      const planetResultBox = document.getElementById('planet-result');
+
+      resultMsg.textContent = '';
+      planetImgBox.innerHTML = '';
+      planetResultBox.innerHTML = '';
+
+      if (!massInput || isNaN(massInput)) {
+        resultMsg.textContent = 'Mass is required';
+        return;
+      }
+
+      if (!planet) {
+        resultMsg.textContent = 'Please select a planet';
+        return;
+      }
+
+      const mass = parseFloat(massInput);
+      const gravity = planetData[planet].gravity;
+      const weight = (mass * gravity).toFixed(2);
+      const image = planetData[planet].image;
+
+      const imgEl = document.createElement('img');
+      imgEl.src = image;
+      imgEl.alt = planet;
+      planetImgBox.appendChild(imgEl);
+
+      planetResultBox.innerHTML = `
+        <p>The weight of the object on <strong>${planet}</strong> is <strong>${weight} N</strong>.</p>
+      `;
+    });
+  </script>
+</body>
+</html>
